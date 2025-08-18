@@ -1,14 +1,15 @@
 from pathlib import Path
+import os
+from decouple import config
+import dj_database_url
+import django_heroku
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
-SECRET_KEY = 't3hdizgqsz+!^w0(gxd5912)laazacn1s)=)gz(-5@=0@s8978'
-DEBUG = False
-import os
-from decouple import config
-
+SECRET_KEY = config('SECRET_KEY', default='t3hdizgqsz+!^w0(gxd5912)laazacn1s)=)gz(-5@=0@s8978')
+DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
 
 # Application definition
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise để phục vụ static files trên Heroku
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -50,7 +52,7 @@ ROOT_URLCONF = 'MyStore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # thêm nếu bạn có template ngoài app
+        'DIRS': [],  # Thêm nếu có template ngoài app
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,12 +67,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'MyStore.wsgi.application'
 
-# Database
+# Database (PostgreSQL trên Heroku, fallback SQLite cho local)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600
+    )
 }
 
 # Password validation
@@ -89,7 +91,9 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # WhiteNoise dùng staticfiles
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -102,3 +106,6 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/logout-success/'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
