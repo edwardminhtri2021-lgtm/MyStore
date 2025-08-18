@@ -115,18 +115,26 @@ def plot_to_base64(fig):
 
 @superuser_required
 def store_chart(request):
-    # Use MEDIA_ROOT so it's easier to configure
-    DATA_PATH = os.path.join(settings.BASE_DIR, 'MyStore', 'analysis', 'data')
-    file_path = os.path.join(DATA_PATH, 'orders_items.csv')
+    # Path to CSV inside the app
+    file_path = os.path.join(settings.MEDIA_ROOT, 'analysis', 'orders_items.csv')
 
+
+    # Check if file exists
+    if not os.path.exists(file_path):
+        return render(request, 'analysis/store_chart.html', {'error': 'File orders_items.csv không tồn tại.'})
 
     try:
         df = pd.read_csv(file_path)
-    except FileNotFoundError:
-        return render(request, 'analysis/store_chart.html', {'error': 'File orders_items.csv không tồn tại.'})
+    except Exception as e:
+        return render(request, 'analysis/store_chart.html', {'error': f'Không thể đọc file CSV: {e}'})
 
+    if df.empty:
+        return render(request, 'analysis/store_chart.html', {'error': 'CSV trống, không có dữ liệu để hiển thị.'})
+
+    # Ensure product_id is string
     df['product_id'] = df['product_id'].astype(str)
 
+    # Compute quantity per product
     if 'quantity' in df.columns:
         df['quantity'] = pd.to_numeric(df['quantity'], errors='coerce').fillna(0)
         product_counts = df.groupby('product_id')['quantity'].sum()
@@ -143,6 +151,7 @@ def store_chart(request):
     ax.set_ylabel('Số lượng đã đặt')
     ax.set_title('Số lượng hàng hóa đã đặt theo từng Product')
     plt.xticks(rotation=45)
+    plt.tight_layout()
 
     graph = plot_to_base64(fig)
 
