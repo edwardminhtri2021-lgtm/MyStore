@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = 't3hdizgqsz+!^w0(gxd5912)laazacn1s)=)gz(-5@=0@s8978'
-DEBUG = True  # Chuyển thành False khi deploy
+DEBUG = False
 ALLOWED_HOSTS = []  # sẽ thêm host Heroku sau
 
 # Application definition
