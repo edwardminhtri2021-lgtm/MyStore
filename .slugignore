@@ -1,0 +1,7 @@
+media/
+data/
+node_modules/
+venv/
+*.log
+*.sqlite3
+__pycache__/
