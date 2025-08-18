@@ -1,0 +1,142 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% block body_block %}
+
+
+<!-- Slider Area -->
+<section class="hero-slider">
+	<a href="{% url 'store:shop' %}">
+		<div class="single-slider">
+			<div class="container">
+				<div class="row no-gutters">
+					<div class="col-lg-9 offset-lg-3 col-12">
+						<div class="text-inner">
+							<div class="row">
+								<div class="col-lg-7 col-12">
+									<div class="hero-text"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</a>
+</section>
+<!--/ End Slider Area -->
+
+<!-- Start Most Popular -->
+<div class="product-area most-popular section">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="section-title">
+					<h2>Sản phẩm mới</h2>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				{% if twenty_newest %}
+				<div class="owl-carousel popular-slider">
+					{% for product in twenty_newest %}
+					<div class="single-product">
+						<div class="product-img">
+							<a href="{% url 'store:product.html' product.pk %}">
+								<img class="default-img" src="{{product.image.url}}" alt="{{product.name}}">
+								<img class="hover-img" src="{{product.image.url}}" alt="{{product.name}}">
+								<span class="out-of-stock">New</span>
+							</a>
+							<div class="button-head">
+								<div class="product-action-2">
+									<form method="POST" action="{% url 'store:add_to_cart' product.id %}">
+										{% csrf_token %}
+										<button type="submit" class="btn btn-primary">Chọn mua</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="product-content">
+							<h3><a href="{% url 'store:product.html' product.pk %}">{{product.name}}</a></h3>
+							<div class="product-price">
+								<span class="old">{% load humanize %}{{product.price_origin|floatformat:0|intcomma}} đ</span>
+								<span>{% load humanize %}{{product.price|floatformat:0|intcomma}} đ</span>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End Most Popular Area -->
+
+<!-- Start Shop Home List  -->
+<section class="shop-home-list section">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="row">
+					<div class="col-12">
+						<div class="shop-section-title">
+							<h1>Đồ Dùng Nhà Bếp</h1>
+						</div>
+					</div>
+				</div>
+				{% if ddnb %}
+				{% for category in ddnb %}
+				<div class="single-list">
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-12">
+							<div class="list-image overlay">
+								<img class="default-img" src="{{category.image.url}}" alt="{{category.name}}">
+								<a href="{% url 'store:shop_by_category' category.id %}" class="buy"><i class="fa fa-shopping-bag"></i></a>
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-12 no-padding">
+							<div class="content">
+								<h5 class="title"><a href="{% url 'store:shop_by_category' category.id%}">{{category.name}}</a></h5>								
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif %}
+			</div>
+
+			<div class="col-lg-6 col-md-6 col-12">
+				<div class="row">
+					<div class="col-12">
+						<div class="shop-section-title">
+							<h1>Thiết bị gia đình</h1>
+						</div>
+					</div>
+				</div>
+				{% if tbgd %}
+				{% for category in tbgd %}
+				<div class="single-list">
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-12">
+							<div class="list-image overlay">
+								<img class="default-img" src="{{category.image.url}}" alt="{{category.name}}">
+								<a href="{% url 'store:shop_by_category' category.id%}" class="buy"><i class="fa fa-shopping-bag"></i></a>
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-12 no-padding">
+							<div class="content">
+								<h5 class="title"><a href="{% url 'store:shop_by_category' category.id%}">{{category.name}}</a></h5>								
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End Shop Home List  -->
+
+{% endblock %}

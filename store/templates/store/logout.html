@@ -1,0 +1,9 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block body_block %}
+<div style="text-align:center; margin-top:50px;">
+    <h2>Bạn đã đăng xuất thành công!</h2>
+    <a href="{% url 'store:index' %}">Về trang chủ</a>
+</div>
+{% endblock %}

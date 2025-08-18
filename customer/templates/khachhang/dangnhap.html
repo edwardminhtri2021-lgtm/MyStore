@@ -1,0 +1,115 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% block body_block %}
+<!-- Header Inner -->
+<div class="header-inner">
+	<div class="container">
+		<div class="cat-nav-head">
+			<div class="row">
+				<div class="col-lg-12 col-12">
+					<div class="menu-area">
+						<!-- Main Menu -->
+						<nav class="navbar navbar-expand-lg">
+							<div class="navbar-collapse">
+								<div class="nav-inner">
+									<ul class="nav main-menu menu navbar-nav">
+										<li><a href="{% url 'store:index.html'%}">Home</a></li>
+										<li><a href="#">Shop<i class="ti-angle-down"></i><span
+													class="new">New</span></a>
+											<ul class="dropdown">
+												<li><a href="{% url 'store:shop.html' 0 %}">Cửa hàng</a></li>
+												<li><a href="{% url 'cart:cart_detail'%}">Giỏ hàng</a></li>												
+											</ul>
+										</li>
+										<li><a href="{% url 'store:contact.html'%}">Liên hệ</a></li>
+										<li><a href="{% url 'store:rss.html'%}">RSS</a></li>
+										<li><a href="{% url 'store:products.html'%}">Products</a></li>
+									</ul>
+								</div>
+							</div>
+						</nav>
+						<!--/ End Main Menu -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--/ End Header Inner -->
+</header>
+<!--/ End Header -->
+
+
+
+<!-- Start Contact -->
+<section id="contact-us" class="contact-us section">
+	<div class="container">
+		<div class="contact-head">
+			<div class="row">
+				<div class="col-lg-8 col-12">
+					<div class="form-main">
+						<div class="title">
+							<h4>Đăng nhập</h4>
+						</div>
+						<form class="form" method="POST" action="{% url 'khach-hang:dang-nhap.html' %}">
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-lg-6 col-12">
+									<div class="form-group">
+										<label>Username<span>*</span></label>
+										<input name="username" type="text"/>
+									</div>
+								</div>
+								<div class="col-lg-6 col-12">
+									<div class="form-group">
+										<label>Password<span>*</span></label>
+										<input name="password" type="password"/>
+									</div>
+								</div>								
+								<div class="col-12">
+									<div class="form-group button">
+										<button type="submit" class="btn ">Đăng nhập</button>
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="title">
+							<h7 style="color:blue;">{% if login_result %} {{login_result}} {% endif %}</h6>			
+							<h7 style="color:red;">{% if logout %} {{logout}} {% endif %}</h6>												
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-12">
+					<div class="single-head">
+						<div class="single-info">
+							<i class="fa fa-phone"></i>
+							<h4 class="title">Điện thoại:</h4>
+							<ul>
+								<li>(028) 38 351 056</li>
+							</ul>
+						</div>
+						<div class="single-info">
+							<i class="fa fa-envelope-open"></i>
+							<h4 class="title">Email:</h4>
+							<ul>
+								<li><a href="mailto:tuvan@csc.hcmus.edu.vn">tuvan@csc.hcmus.edu.vn</a></li>
+							</ul>
+						</div>
+						<div class="single-info">
+							<i class="fa fa-location-arrow"></i>
+							<h4 class="title">Địa chỉ:</h4>
+							<ul>
+								<li>CS1: 227 Nguyễn Văn Cừ P.4, Q.5, TP.HCM</li>
+								<li>CS2: 137E Nguyễn Chí Thanh P.9, Q.5, TP.HCM</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--/ End Contact -->
+
+<!--/ End Map Section -->
+{% endblock %}

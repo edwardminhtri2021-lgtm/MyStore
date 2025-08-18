@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders Report - {{ quarter }} {{ year }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h2 { text-align: center; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #fafafa; }
+        a.pdf-link { display: inline-block; margin-top: 10px; padding: 8px 12px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px; }
+        a.pdf-link:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h2>Báo cáo đơn hàng {{ quarter }} {{ year }}</h2>
+
+    {% if orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>OrderID</th>
+                    <th>Customer</th>
+                    <th>Address</th>
+                    <th>Quantity</th>
+                    <th>TotalPrice</th>
+                    <th>CreatedAt</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.OrderID }}</td>
+                    <td>{{ order.Customer }}</td>
+                    <td>{{ order.Address }}</td>
+                    <td>{{ order.Quantity }}</td>
+                    <td>{{ order.TotalPrice }}</td>
+                    <td>{{ order.CreatedAt|date:"d M Y, H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Không có đơn hàng nào trong quý hiện hành.</p>
+    {% endif %}
+
+    {% if pdf_file %}
+        <p>
+            <a href="{{ pdf_file }}" target="_blank" class="pdf-link">Click để mở file PDF</a>
+        </p>
+    {% endif %}
+</body>
+</html>

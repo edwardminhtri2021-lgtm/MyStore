@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Index</title>
+</head>
+<body>
+    <h1>Welcome to Analysis App</h1>
+    <ul>
+        {% for link in links %}
+            <li><a href="{{ link.url }}">{{ link.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

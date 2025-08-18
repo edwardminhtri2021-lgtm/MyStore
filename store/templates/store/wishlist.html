@@ -1,0 +1,38 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block body_block %}
+
+<div class="container mt-4">
+    <h2>Wishlist của bạn</h2>
+
+    {% if products %}
+        <div class="row">
+            {% for product in products %}
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.price|floatformat:0|intcomma }} đ</p>
+                            <div class="d-flex justify-content-between">
+                                <!-- View Product -->
+                                <a href="{% url 'store:product.html' product.pk %}" class="btn btn-sm btn-primary">Xem</a>
+                                
+                                <!-- Remove from Wishlist -->
+                                <form method="POST" action="{% url 'store:remove_from_wishlist' product.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Wishlist của bạn đang trống.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

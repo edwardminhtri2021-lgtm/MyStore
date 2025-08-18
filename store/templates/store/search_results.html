@@ -1,0 +1,27 @@
+{% extends 'store/base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Kết quả tìm kiếm cho: "{{ query }}"</h2>
+    
+    {% if products %}
+        <div class="row">
+            {% for product in products %}
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.price|floatformat:0|intcomma }} đ</p>
+                            <a href="{% url 'store:product' product.id %}" class="btn btn-primary">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Không tìm thấy sản phẩm nào.</p>
+    {% endif %}
+</div>
+{% endblock %}

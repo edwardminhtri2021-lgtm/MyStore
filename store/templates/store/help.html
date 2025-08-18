@@ -1,0 +1,12 @@
+{% extends "store/base.html" %}
+{% block body_block %}
+<div class="container mt-4">
+    <h2>Trợ giúp</h2>
+    <p>Nếu bạn cần hỗ trợ, vui lòng liên hệ:</p>
+    <ul>
+        <li>Email: support@myshop.com</li>
+        <li>SĐT: 0123 456 789</li>
+        <li>Hoặc vào mục <a href="{% url 'store:contact.html' %}">Liên hệ</a></li>
+    </ul>
+</div>
+{% endblock %}

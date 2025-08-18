@@ -1,0 +1,71 @@
+{# templates/analysis/campaign_analysis.html #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Campaign Analysis</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body { padding: 20px; }
+        h1 { margin-bottom: 20px; }
+        .table-container { margin-bottom: 40px; }
+    </style>
+</head>
+<body>
+    <h1>Campaign Analysis</h1>
+
+    <!-- 1. Thông tin cơ bản -->
+    <div class="table-container">
+        <h3>Thông tin cơ bản</h3>
+        <p><strong>Số lượng views:</strong> {{ views_count }}</p>
+        <p><strong>Số lượng likes:</strong> {{ likes_count }}</p>
+        <p><strong>5 views đầu tiên:</strong> {{ views_head }}</p>
+        <p><strong>5 likes đầu tiên:</strong> {{ likes_head }}</p>
+    </div>
+
+    <!-- 2. Thống kê chung -->
+    <div class="table-container">
+        <h3>Thống kê views</h3>
+        {{ views_stats|safe }}
+        <h3>Thống kê likes</h3>
+        {{ likes_stats|safe }}
+    </div>
+
+    <!-- 3. Max / Min Views -->
+    <div class="table-container">
+        <h3>Views Max / Min</h3>
+        <p><strong>Views lớn nhất:</strong> {{ views_max }} (số lần xuất hiện: {{ views_max_count }})</p>
+        <p><strong>Views nhỏ nhất:</strong> {{ views_min }} (số lần xuất hiện: {{ views_min_count }})</p>
+    </div>
+
+    <!-- 4. Likes Median -->
+    <div class="table-container">
+        <h3>Likes Median</h3>
+        <p><strong>Median:</strong> {{ likes_median }}</p>
+        <p><strong>Bằng median:</strong> {{ likes_equal_median }}</p>
+        <p><strong>Lớn hơn median:</strong> {{ likes_greater_median }}</p>
+        <p><strong>Nhỏ hơn median:</strong> {{ likes_less_median }}</p>
+    </div>
+
+    <!-- 5. Category Likes -->
+    <div class="table-container">
+        <h3>Category Likes (>= median)</h3>
+        <p>5 giá trị đầu tiên: {{ category_likes_head }}</p>
+    </div>
+
+    <!-- 6. Unique count -->
+    <div class="table-container">
+        <h3>Unique Count</h3>
+        <p><strong>Số lượng views khác nhau:</strong> {{ views_unique_count }}</p>
+        <p><strong>Số lượng likes khác nhau:</strong> {{ likes_unique_count }}</p>
+    </div>
+
+    <!-- 7. DataFrame head -->
+    <div class="table-container">
+        <h3>DataFrame đầu tiên</h3>
+        {{ df_head|safe }}
+    </div>
+
+</body>
+</html>

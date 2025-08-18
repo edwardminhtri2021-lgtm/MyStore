@@ -1,0 +1,31 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% block body_block %}
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">Association Rules</h1>
+    <div class="overflow-x-auto">
+        <table class="min-w-full border border-gray-300">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2 border">Antecedents</th>
+                    <th class="px-4 py-2 border">Consequents</th>
+                    <th class="px-4 py-2 border">Support</th>
+                    <th class="px-4 py-2 border">Confidence</th>
+                    <th class="px-4 py-2 border">Lift</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rule in rules %}
+                <tr class="text-center border-b hover:bg-gray-50">
+                    <td class="px-4 py-2 border">{{ rule.antecedents }}</td>
+                    <td class="px-4 py-2 border">{{ rule.consequents }}</td>
+                    <td class="px-4 py-2 border">{{ rule.support|floatformat:3 }}</td>
+                    <td class="px-4 py-2 border">{{ rule.confidence|floatformat:3 }}</td>
+                    <td class="px-4 py-2 border">{{ rule.lift|floatformat:3 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

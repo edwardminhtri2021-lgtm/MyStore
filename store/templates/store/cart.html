@@ -1,0 +1,103 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block body_block %}
+
+<!-- Shopping Cart -->
+<div class="shopping-cart section">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<!-- Shopping Summary -->
+				<table class="table shopping-summery">
+					<thead>
+						<tr class="main-hading">
+							<th>SẢN PHẨM</th>
+							<th>TÊN</th>
+							<th class="text-center">ĐƠN GIÁ</th>
+							<th class="text-center">SỐ LƯỢNG</th>
+							<th class="text-center">THÀNH TIỀN</th>
+							<th class="text-center"><i class="ti-trash remove-icon"></i></th>
+						</tr>
+					</thead>
+					<tbody>
+					{% if cart_items %}
+						{% for item in cart_items %}
+						<tr>
+							<td class="image" data-title="No">
+								<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100" height="100">
+							</td>
+							<td class="product-des" data-title="Description">
+								<p class="product-name"><a href="#">{{ item.product.name }}</a></p>
+								<p class="product-des">{{ item.product.description|default:"(Không có mô tả)" }}</p>
+							</td>
+							<td class="price text-center" data-title="Price">
+								<span>{{ item.product.price|floatformat:0|intcomma }} đ</span>
+							</td>
+							<td class="qty text-center" data-title="Qty">
+								{{ item.quantity }}
+							</td>
+							<td class="total-amount text-center" data-title="Total">
+								<span>{{ item.total|floatformat:0|intcomma }} đ</span>
+							</td>
+							<td class="action text-center" data-title="Remove">
+								<a href="{% url 'store:remove_from_cart' item.product.id %}">
+									<i class="ti-trash remove-icon"></i> 
+								</a>
+
+							</td>
+						</tr>
+						{% endfor %}
+					{% else %}
+						<tr>
+							<td colspan="6" class="text-center">Giỏ hàng của bạn đang trống.</td>
+						</tr>
+					{% endif %}
+					</tbody>
+				</table>
+				<!--/ End Shopping Summary -->
+			</div>
+		</div>
+
+		<!-- Tổng đơn hàng -->
+		{% if cart_items %}
+		<div class="row">
+			<div class="col-12">
+				<div class="total-amount">
+					<div class="row">
+						<div class="col-lg-8 col-md-5 col-12">
+							<div class="left">
+								<div class="coupon">
+									<form action="#" method="post">
+										<input name="Coupon" placeholder="Nhập mã giảm giá">
+										<button class="btn">Áp dụng</button>
+									</form>
+								</div>
+								<div class="checkbox">
+									<label class="checkbox-inline"><input type="checkbox"> Giao hàng (+20.000đ)</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-7 col-12">
+							<div class="right">
+								<ul>
+									<li>Tạm tính<span>{{ total_price|floatformat:0|intcomma }} đ</span></li>
+									<li>Giao hàng<span>Miễn phí</span></li>
+									<li class="last">Tổng cộng<span>{{ total_price|floatformat:0|intcomma }} đ</span></li>
+								</ul>
+								<div class="button5">
+									<a href="{% url 'store:checkout.html' %}" class="btn">Thanh toán</a>
+									<a href="{% url 'store:shop'  %}" class="btn">Tiếp tục mua sắm</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+<!--/ End Shopping Cart -->
+
+{% endblock %}
