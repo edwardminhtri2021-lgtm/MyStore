@@ -24,7 +24,7 @@ __pycache__/
 *.sql
 
 # ------------------------
-# Media & uploads (lưu local, không deploy)
+# Media & uploads (local storage, not deployed)
 # ------------------------
 media/
 data/
@@ -41,3 +41,12 @@ tmp/
 .vscode/
 *.bak
 *.tmp
+
+# ------------------------
+# Documentation & test outputs
+# ------------------------
+docs/_build/
+*.cover
+.coverage
+htmlcov/
+pytest_cache/
