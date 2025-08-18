@@ -6,7 +6,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 SECRET_KEY = 't3hdizgqsz+!^w0(gxd5912)laazacn1s)=)gz(-5@=0@s8978'
 DEBUG = False
-ALLOWED_HOSTS = []  # sẽ thêm host Heroku sau
+import os
+from decouple import config
+
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
 
 # Application definition
 INSTALLED_APPS = [
