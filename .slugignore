@@ -1,7 +1,43 @@
-media/
-data/
-node_modules/
+# ------------------------
+# Virtual environment & Node
+# ------------------------
 venv/
+node_modules/
+
+# ------------------------
+# Python cache & temp
+# ------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+*.DS_Store
+
+# ------------------------
+# Logs & database
+# ------------------------
 *.log
 *.sqlite3
-__pycache__/
+*.db
+*.sql
+
+# ------------------------
+# Media & uploads (lưu local, không deploy)
+# ------------------------
+media/
+data/
+uploads/
+staticfiles/
+
+# ------------------------
+# Temporary files & misc
+# ------------------------
+tmp/
+.cache/
+.env
+.idea/
+.vscode/
+*.bak
+*.tmp
