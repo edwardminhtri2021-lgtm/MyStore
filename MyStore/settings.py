@@ -8,45 +8,27 @@ import django_heroku
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ================= SECURITY =================
-from decouple import config
-
 SECRET_KEY = config('SECRET_KEY', default='fallback-key')
 DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
 
-
 # ================= DATABASE =================
-import dj_database_url
-
 DATABASES = {
     'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",  # Windows-safe
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",  # fallback for local dev
         conn_max_age=600
     )
 }
 
-# ================= MEDIA =================
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
-
-# ================= STATIC =================
+# ================= STATIC FILES =================
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ================= ORDERS / CSV FILES =================
-# Path to CSVs inside your repo
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# ================= LOCAL MEDIA (fallback only) =================
+# If you want to keep local uploads for dev, otherwise Supabase will override
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
-
-# Instead of D:\MyStore\media\analysis\csv...
-ORDERS_FILE = BASE_DIR / 'analysis' / 'csv' / 'orders_items.csv'
-VIEWS_FILE = BASE_DIR / 'analysis' / 'csv' / 'data_views.csv'
-LIKES_FILE = BASE_DIR / 'analysis' / 'csv' / 'data_likes.csv'
-RULES_FILE = BASE_DIR / 'analysis' / 'csv' / 'rules.csv'
-
 
 # ================= APPLICATIONS =================
 INSTALLED_APPS = [
@@ -76,7 +58,7 @@ INSTALLED_APPS = [
 # ================= MIDDLEWARE =================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve static files efficiently
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Efficient static serving
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -130,13 +112,19 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/logout-success/'
 
-# ================= AWS S3 (optional) =================
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-# AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-# AWS_QUERYSTRING_AUTH = False
-# MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+# ================= SUPABASE STORAGE (S3-compatible) =================
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_ACCESS_KEY_ID = config("SUPABASE_ACCESS_KEY", default="supabase")
+AWS_SECRET_ACCESS_KEY = config("SUPABASE_SECRET_KEY")  # service_role key from .env
+AWS_STORAGE_BUCKET_NAME = config("SUPABASE_BUCKET", default="media")
+
+# S3-compatible endpoint from Supabase
+AWS_S3_ENDPOINT_URL = f"https://{config('SUPABASE_PROJECT_ID')}.supabase.co/storage/v1/s3"
+
+# File URLs should be public
+AWS_QUERYSTRING_AUTH = False
+MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/"
 
 # ================= DJANGO HEROKU =================
 django_heroku.settings(locals())
