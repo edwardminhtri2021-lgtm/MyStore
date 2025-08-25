@@ -32,7 +32,7 @@ class Category(models.Model):
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     name = models.CharField(max_length=150, unique=True)
-    image = models.ImageField(upload_to="store/images", default="store/images/default.png")
+    image = models.ImageField(upload_to="store/images")
     
     def __str__(self):
         return self.name
@@ -42,7 +42,7 @@ class Product(models.Model):
     name = models.CharField(max_length=250)
     price = models.FloatField(default=0.0)
     price_origin = models.FloatField(null=True)
-    image = models.ImageField(upload_to="store/images", default="store/images/default.png")
+    image = models.ImageField(upload_to="store/images")
     content = RichTextUploadingField(blank=True, null=True)
     public_day = models.DateTimeField(default=datetime.datetime.now)
     viewed = models.IntegerField(default=0)
